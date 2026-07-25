@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>टंकण अभ्यास केंद्र | Typing Practice Studio</title>
+<style>
+  @font-face {
+    font-family: 'Kruti Dev 010';
+    src: local('Kruti Dev 010'), local('KrutiDev010');
+  }
+
+  :root{
+    --ink:#1B2A4A;
+    --ink-soft:#38507a;
+    --paper:#F2F4F7;
+    --card:#FFFFFF;
+    --rule:#D8DEE8;
+    --marigold:#E8A33D;
+    --marigold-dark:#c8841f;
+    --leaf:#2F9E5B;
+    --crimson:#D6483F;
+    --text:#20242C;
+    --text-soft:#5b6472;
+    --shadow: 0 2px 10px rgba(27,42,74,0.07), 0 1px 2px rgba(27,42,74,0.06);
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--text);
+    font-family:'Poppins','Noto Sans Devanagari',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- HEADER / TOP MASTHEAD ---------- */
+  .masthead{
+    background: var(--ink);
+    color:#fff;
+    padding: 22px 28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .masthead h1{
+    margin:0;
+    font-size:1.35rem;
+    font-weight:600;
+    letter-spacing:0.02em;
+  }
+  .masthead .sub{
+    display:block;
+    font-size:0.78rem;
+    font-weight:400;
+    color:#b9c3d9;
+    margin-top:3px;
+    font-family:'Noto Sans Devanagari',sans-serif;
+  }
+  .badge-2026{
+    background:var(--marigold);
+    color:#3a2600;
+    font-size:0.68rem;
+    font-weight:700;
+    padding:2px 8px;
+    border-radius:20px;
+    margin-left:8px;
+    vertical-align:middle;
+  }
+
+  .container{
+    max-width:1240px;
+    margin:0 auto;
+    padding: 22px;
+  }
+
+  /* ---------- TOP: GK PANEL ---------- */
+  .gk-panel{
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    margin-bottom:26px;
+  }
+  .gk-panel-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 20px;
+    border-bottom:1px solid var(--rule);
+    background: linear-gradient(180deg,#fbfcfe,#f5f7fa);
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .gk-panel-header h2{
+    margin:0;
+    font-size:1.05rem;
+    color:var(--ink);
+    font-family:'Noto Sans Devanagari',sans-serif;
+  }
+  .gk-meta{
+    font-size:0.75rem;
+    color:var(--text-soft);
+    margin-top:2px;
+  }
+  .btn{
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+    font-weight:600;
+    border-radius:8px;
+    padding:10px 18px;
+    font-size:0.85rem;
+    transition: transform .12s ease, box-shadow .12s ease, background .15s ease;
+  }
+  .btn:active{ transform: translateY(1px); }
+  .btn-refresh{
+    background:var(--marigold);
+    color:#3a2600;
+    box-shadow:0 2px 6px rgba(232,163,61,0.45);
+  }
+  .btn-refresh:hover{ background:var(--marigold-dark); }
+  .btn-refresh .set-tag{
+    background:rgba(58,38,0,0.15);
+    padding:1px 7px;
+    border-radius:10px;
+    font-size:0.7rem;
+    margin-left:6px;
+  }
+
+  .gk-list{
+    max-height: 340px;
+    overflow-y:auto;
+    padding: 6px 0;
+  }
+  .gk-item{
+    display:flex;
+    gap:14px;
+    padding:12px 20px;
+    border-bottom:1px dashed var(--rule);
+    font-family:'Noto Sans Devanagari',sans-serif;
+  }
+  .gk-item:last-child{ border-bottom:none; }
+  .gk-num{
+    flex:0 0 26px;
+    height:26px;
+    border-radius:50%;
+    background:var(--ink);
+    color:#fff;
+    font-size:0.72rem;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-top:2px;
+    font-family:'Poppins',sans-serif;
+  }
+  .gk-q{ font-size:0.95rem; color:var(--text); line-height:1.55; }
+  .gk-a{
+    margin-top:4px;
+    font-size:0.88rem;
+    color:var(--leaf);
+    font-weight:600;
+  }
+  .gk-a span.label{
+    color:var(--text-soft);
+    font-weight:500;
+    font-family:'Poppins',sans-serif;
+    font-size:0.75rem;
+    margin-right:4px;
+  }
+
+  /* ---------- BOTTOM SPLIT ---------- */
+  .workspace{
+    display:grid;
+    grid-template-columns: 260px 1fr;
+    gap:22px;
+    align-items:start;
+  }
+  @media (max-width: 820px){
+    .workspace{ grid-template-columns: 1fr; }
+  }
+
+  /* ---- TIMER SIDEBAR ---- */
+  .timer-card{
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:20px;
+    position:sticky;
+    top:16px;
+  }
+  .timer-card h3{
+    margin:0 0 14px;
+    font-size:0.95rem;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .timer-ring-wrap{
+    display:flex;
+    justify-content:center;
+    margin-bottom:16px;
+  }
+  .timer-display{
+    font-family:'Poppins',monospace;
+    font-variant-numeric: tabular-nums;
+    font-size:2.1rem;
+    font-weight:700;
+    color:var(--ink);
+    text-align:center;
+    letter-spacing:0.03em;
+    padding:18px 0;
+    border:3px solid var(--rule);
+    border-radius:50%;
+    width:150px;
+    height:150px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto;
+    transition: border-color .3s ease, color .3s ease;
+  }
+  .timer-display.running{ border-color: var(--marigold); }
+  .timer-display.danger{ border-color: var(--crimson); color:var(--crimson); animation: pulse 1s infinite; }
+  @keyframes pulse{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.04); }
+  }
+
+  .timer-controls{
+    display:flex;
+    gap:8px;
+    margin-top:16px;
+  }
+  .timer-controls .btn{ flex:1; padding:9px 6px; font-size:0.78rem; }
+  .btn-start{ background:var(--leaf); color:#fff; }
+  .btn-start:hover{ background:#278a4c; }
+  .btn-pause{ background:#eef1f5; color:var(--ink); border:1px solid var(--rule); }
+  .btn-pause:hover{ background:#e2e7ee; }
+  .btn-reset{ background:#fdf0ef; color:var(--crimson); border:1px solid #f3c9c6; }
+  .btn-reset:hover{ background:#fbe0de; }
+
+  .timer-set{
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px dashed var(--rule);
+  }
+  .timer-set label{
+    font-size:0.75rem;
+    color:var(--text-soft);
+    display:block;
+    margin-bottom:6px;
+  }
+  .timer-set-row{ display:flex; gap:6px; }
+  .timer-set-row button{
+    flex:1;
+    background:#eef1f5;
+    border:1px solid var(--rule);
+    border-radius:6px;
+    padding:6px 4px;
+    font-size:0.72rem;
+    cursor:pointer;
+    color:var(--ink-soft);
+  }
+  .timer-set-row button:hover{ background:#e2e7ee; }
+
+  .time-up-banner{
+    display:none;
+    margin-top:14px;
+    background:#fdf0ef;
+    border:1px solid var(--crimson);
+    color:var(--crimson);
+    font-size:0.8rem;
+    font-weight:700;
+    text-align:center;
+    padding:10px;
+    border-radius:8px;
+  }
+  .time-up-banner.show{ display:block; }
+
+  /* ---- WRITING PAD ---- */
+  .pad-card{
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .pad-toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    align-items:flex-end;
+    padding:16px 18px;
+    border-bottom:1px solid var(--rule);
+    background: linear-gradient(180deg,#fbfcfe,#f5f7fa);
+  }
+  .tool-group{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+  }
+  .tool-group label{
+    font-size:0.68rem;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--text-soft);
+    font-weight:600;
+  }
+  select.font-select{
+    padding:8px 10px;
+    border-radius:8px;
+    border:1px solid var(--rule);
+    background:#fff;
+    font-size:0.85rem;
+    color:var(--ink);
+    min-width:170px;
+  }
+  .fontsize-controls{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .fs-btn{
+    width:30px; height:30px;
+    border-radius:7px;
+    border:1px solid var(--rule);
+    background:#fff;
+    color:var(--ink);
+    font-weight:700;
+    cursor:pointer;
+    font-size:1rem;
+    line-height:1;
+  }
+  .fs-btn:hover{ background:#eef1f5; }
+  .fs-value{
+    min-width:44px;
+    text-align:center;
+    font-size:0.85rem;
+    color:var(--ink);
+    font-weight:600;
+  }
+
+  .pad-stats{
+    margin-left:auto;
+    display:flex;
+    gap:18px;
+  }
+  .stat{
+    text-align:center;
+  }
+  .stat .num{
+    font-size:1.15rem;
+    font-weight:700;
+    color:var(--marigold-dark);
+    font-family:'Poppins',monospace;
+  }
+  .stat .lbl{
+    font-size:0.65rem;
+    color:var(--text-soft);
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+
+  .pad-body{
+    padding:0;
+    background:
+      linear-gradient(90deg, transparent 54px, var(--crimson) 54px, var(--crimson) 55px, transparent 55px),
+      repeating-linear-gradient(
+        to bottom,
+        #fff 0px, #fff 33px,
+        #dfe6f0 33px, #dfe6f0 34px
+      );
+  }
+  textarea#writingPad{
+    width:100%;
+    min-height:420px;
+    border:none;
+    outline:none;
+    resize:vertical;
+    background:transparent;
+    padding: 14px 24px 14px 68px;
+    line-height:34px;
+    font-size:1.15rem;
+    color:var(--text);
+    font-family:'Noto Sans Devanagari',sans-serif;
+  }
+  textarea#writingPad::placeholder{ color:#9aa4b5; }
+
+  .pad-footer{
+    display:flex;
+    justify-content:flex-end;
+    padding:10px 18px;
+    border-top:1px solid var(--rule);
+    background:#fbfcfe;
+  }
+  .btn-clear{
+    background:none;
+    border:1px solid var(--rule);
+    color:var(--text-soft);
+    padding:7px 14px;
+    border-radius:7px;
+    font-size:0.78rem;
+    cursor:pointer;
+  }
+  .btn-clear:hover{ color:var(--crimson); border-color:var(--crimson); }
+
+  ::-webkit-scrollbar{ width:8px; }
+  ::-webkit-scrollbar-thumb{ background:var(--rule); border-radius:6px; }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div>
+    <h1>Typing Practice Studio <span class="badge-2026">2026</span></h1>
+    <span class="sub">Typing Practice Studio — Hindi GK · Timer · Writing Pad</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ============ TOP: GK PANEL ============ -->
+  <section class="gk-panel">
+    <div class="gk-panel-header">
+      <div>
+        <h2>General Knowledge 2026 — Questions &amp; Answers</h2>
+        <div class="gk-meta" id="gkMeta">Set 1 · 10 Questions</div>
+      </div>
+      <button class="btn btn-refresh" id="refreshBtn">
+        🔄 Refresh Questions <span class="set-tag" id="setTag">Set 1</span>
+      </button>
+    </div>
+    <div class="gk-list" id="gkList"></div>
+  </section>
+
+  <!-- ============ BOTTOM: SPLIT WORKSPACE ============ -->
+  <div class="workspace">
+
+    <!-- LEFT: TIMER -->
+    <aside class="timer-card">
+      <h3>⏱ Countdown Timer</h3>
+      <div class="timer-ring-wrap">
+        <div class="timer-display" id="timerDisplay">05:00</div>
+      </div>
+      <div class="timer-controls">
+        <button class="btn btn-start" id="startBtn">Start</button>
+        <button class="btn btn-pause" id="pauseBtn">Pause</button>
+        <button class="btn btn-reset" id="resetBtn">Reset</button>
+      </div>
+      <div class="timer-set">
+        <label>Quick Set (minutes)</label>
+        <div class="timer-set-row">
+          <button data-min="2">2m</button>
+          <button data-min="5">5m</button>
+          <button data-min="10">10m</button>
+          <button data-min="15">15m</button>
+        </div>
+      </div>
+      <div class="time-up-banner" id="timeUpBanner">⏰ Time's up!</div>
+    </aside>
+
+    <!-- RIGHT: WRITING PAD -->
+    <section class="pad-card">
+      <div class="pad-toolbar">
+        <div class="tool-group">
+          <label>Language / Font</label>
+          <select class="font-select" id="fontSelect">
+            <option value="english">English</option>
+            <option value="hindi" selected>Standard Hindi (Noto Sans Devanagari)</option>
+            <option value="krutidev">Kruti Dev 010</option>
+          </select>
+        </div>
+        <div class="tool-group">
+          <label>Font Size</label>
+          <div class="fontsize-controls">
+            <button class="fs-btn" id="fsMinus">−</button>
+            <span class="fs-value" id="fsValue">18px</span>
+            <button class="fs-btn" id="fsPlus">+</button>
+          </div>
+        </div>
+        <div class="pad-stats">
+          <div class="stat"><div class="num" id="wordCount">0</div><div class="lbl">Words</div></div>
+          <div class="stat"><div class="num" id="charCount">0</div><div class="lbl">Characters</div></div>
+        </div>
+      </div>
+      <div class="pad-body">
+        <textarea id="writingPad" placeholder="यहाँ टाइप करना शुरू करें... / Start typing here..."></textarea>
+      </div>
+      <div class="pad-footer">
+        <button class="btn-clear" id="clearBtn">Clear text</button>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+/* ================= GK QUESTION SETS ================= */
+const gkSets = [
+  [
+    { q: "भारत का 2026 में गणतंत्र दिवस समारोह किस राज्य की झांकी के लिए विशेष रूप से चर्चित रहा?", a: "प्रत्येक वर्ष अलग-अलग राज्यों की झांकियाँ प्रदर्शित होती हैं; अद्यतन जानकारी के लिए वर्तमान समाचार देखें।" },
+    { q: "भारत की जनगणना 2026-27 में किस नई पद्धति को शामिल किए जाने की योजना है?", a: "डिजिटल स्व-गणना (सेल्फ-एन्यूमरेशन) सुविधा" },
+    { q: "भारत का सबसे लंबा नदी पुल कौन सा है?", a: "महात्मा गांधी सेतु (पटना, बिहार)" },
+    { q: "भारतीय संविधान का कौन सा अनुच्छेद मौलिक अधिकारों से संबंधित है?", a: "अनुच्छेद 12 से 35" },
+    { q: "भारत का राष्ट्रीय जलीय जीव कौन सा है?", a: "गंगा डॉल्फिन" },
+    { q: "विश्व का सबसे ऊँचा रेलवे पुल कौन सा है?", a: "चिनाब रेल पुल, जम्मू-कश्मीर" },
+    { q: "भारत की पहली सौर ऊर्जा संचालित रेलगाड़ी किस मार्ग पर चलाई गई?", a: "दिल्ली मेट्रो व कुछ हेरिटेज रेल मार्गों पर सौर पैनल आधारित प्रयोग" },
+    { q: "भारत का सबसे बड़ा राज्य क्षेत्रफल के अनुसार कौन सा है?", a: "राजस्थान" },
+    { q: "भारत रत्न से सम्मानित होने वाला पहला खिलाड़ी कौन था?", a: "मेजर ध्यानचंद (मरणोपरांत, 2021 में भारत रत्न हेतु चर्चा; सचिन तेंदुलकर पहले जीवित खिलाड़ी)" },
+    { q: "भारत की सबसे बड़ी झील (मीठे पानी की) कौन सी है?", a: "वुलर झील, जम्मू-कश्मीर" }
+  ],
+  [
+    { q: "अंतरराष्ट्रीय ओलंपिक समिति (IOC) 2026 शीतकालीन ओलंपिक की मेज़बानी कौन सा देश कर रहा है?", a: "इटली (मिलान-कॉर्टिना)" },
+    { q: "भारत का पहला डिजिटल विश्वविद्यालय किस राज्य में स्थापित हुआ?", a: "केरल" },
+    { q: "भारतीय अंतरिक्ष अनुसंधान संगठन (ISRO) का मुख्यालय कहाँ है?", a: "बेंगलुरु, कर्नाटक" },
+    { q: "भारत की सबसे ऊँची प्रतिमा 'स्टैच्यू ऑफ यूनिटी' किसकी है?", a: "सरदार वल्लभभाई पटेल" },
+    { q: "पंचायती राज व्यवस्था किस संविधान संशोधन द्वारा लागू हुई?", a: "73वां संविधान संशोधन (1992)" },
+    { q: "भारत में जीएसटी (GST) कब लागू हुआ?", a: "1 जुलाई 2017" },
+    { q: "भारत का राष्ट्रीय खेल कौन सा है?", a: "हॉकी" },
+    { q: "विश्व का सबसे बड़ा लोकतंत्र कौन सा देश माना जाता है?", a: "भारत" },
+    { q: "भारत की मुद्रा प्रणाली को नियंत्रित करने वाली संस्था कौन सी है?", a: "भारतीय रिज़र्व बैंक (RBI)" },
+    { q: "चंद्रयान-3 मिशन का सफल लैंडिंग स्थल कौन सा नाम दिया गया?", a: "शिव शक्ति पॉइंट" }
+  ],
+  [
+    { q: "भारत की सबसे लंबी सड़क सुरंग कौन सी है?", a: "अटल सुरंग (रोहतांग, हिमाचल प्रदेश)" },
+    { q: "संयुक्त राष्ट्र संघ की स्थापना किस वर्ष हुई थी?", a: "1945" },
+    { q: "भारत के प्रथम उपराष्ट्रपति कौन थे?", a: "डॉ. सर्वपल्ली राधाकृष्णन" },
+    { q: "भारत में सबसे अधिक वर्षा वाला स्थान कौन सा है?", a: "मौसिनराम, मेघालय" },
+    { q: "'जय जवान जय किसान' का नारा किसने दिया था?", a: "लाल बहादुर शास्त्री" },
+    { q: "भारतीय रेल का सबसे बड़ा जंक्शन कौन सा है?", a: "मथुरा जंक्शन" },
+    { q: "विश्व पर्यावरण दिवस कब मनाया जाता है?", a: "5 जून" },
+    { q: "भारत की पहली महिला राष्ट्रपति कौन थीं?", a: "प्रतिभा पाटिल" },
+    { q: "भारत का राष्ट्रीय पंचांग कौन सा है?", a: "शक संवत" },
+    { q: "'भारत छोड़ो आंदोलन' किस वर्ष शुरू हुआ?", a: "1942" }
+  ],
+  [
+    { q: "भारत की सबसे बड़ी मीठे पानी की झील कौन सी है (मुख्य भूमि)?", a: "वुलर झील" },
+    { q: "विश्व की सबसे ऊँची चोटी कौन सी है?", a: "माउंट एवरेस्ट" },
+    { q: "भारत में केंद्र शासित प्रदेशों की कुल संख्या कितनी है (2026 तक)?", a: "8" },
+    { q: "भारत के राष्ट्रीय ध्वज को किसने डिज़ाइन किया था?", a: "पिंगली वेंकैया" },
+    { q: "'वंदे भारत एक्सप्रेस' की शुरुआत किस वर्ष हुई?", a: "2019" },
+    { q: "भारत का सबसे पुराना राष्ट्रीय उद्यान कौन सा है?", a: "जिम कॉर्बेट राष्ट्रीय उद्यान" },
+    { q: "अंतरराष्ट्रीय योग दिवस कब मनाया जाता है?", a: "21 जून" },
+    { q: "भारत में सर्वप्रथम मेट्रो रेल कहाँ शुरू हुई?", a: "कोलकाता (1984)" },
+    { q: "भारत का राष्ट्रीय पशु कौन सा है?", a: "बाघ" },
+    { q: "'ऑपरेशन गंगा' किससे संबंधित था?", a: "यूक्रेन संकट के दौरान भारतीय नागरिकों की निकासी" }
+  ]
+];
+
+let currentSetIndex = 0;
+
+function renderGkSet(index){
+  const list = document.getElementById('gkList');
+  const set = gkSets[index];
+  list.innerHTML = '';
+  set.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'gk-item';
+    div.innerHTML = `
+      <div class="gk-num">${i+1}</div>
+      <div>
+        <div class="gk-q">${item.q}</div>
+        <div class="gk-a"><span class="label">उत्तर:</span>${item.a}</div>
+      </div>`;
+    list.appendChild(div);
+  });
+  document.getElementById('gkMeta').textContent = `Set ${index+1} · ${set.length} Questions`;
+  document.getElementById('setTag').textContent = `Set ${index+1}`;
+}
+
+document.getElementById('refreshBtn').addEventListener('click', () => {
+  currentSetIndex = (currentSetIndex + 1) % gkSets.length;
+  renderGkSet(currentSetIndex);
+});
+
+renderGkSet(currentSetIndex);
+
+/* ================= TIMER ================= */
+let totalSeconds = 5 * 60;
+let remainingSeconds = totalSeconds;
+let timerInterval = null;
+let isRunning = false;
+
+const timerDisplay = document.getElementById('timerDisplay');
+const timeUpBanner = document.getElementById('timeUpBanner');
+
+function formatTime(sec){
+  const m = Math.floor(sec / 60).toString().padStart(2,'0');
+  const s = (sec % 60).toString().padStart(2,'0');
+  return `${m}:${s}`;
+}
+
+function updateTimerDisplay(){
+  timerDisplay.textContent = formatTime(remainingSeconds);
+  timerDisplay.classList.toggle('danger', remainingSeconds <= 10 && remainingSeconds > 0);
+}
+
+function tick(){
+  if(remainingSeconds > 0){
+    remainingSeconds--;
+    updateTimerDisplay();
+    if(remainingSeconds === 0){
+      clearInterval(timerInterval);
+      isRunning = false;
+      timerDisplay.classList.remove('running','danger');
+      timeUpBanner.classList.add('show');
+      try{
+        // simple audible beep via WebAudio, no external assets
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        osc.frequency.value = 880;
+        osc.connect(ctx.destination);
+        osc.start();
+        setTimeout(()=>{ osc.stop(); ctx.close(); }, 500);
+      }catch(e){}
+      alert('⏰ Time is up!');
+    }
+  }
+}
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  if(isRunning || remainingSeconds <= 0) return;
+  isRunning = true;
+  timeUpBanner.classList.remove('show');
+  timerDisplay.classList.add('running');
+  timerInterval = setInterval(tick, 1000);
+});
+
+document.getElementById('pauseBtn').addEventListener('click', () => {
+  isRunning = false;
+  clearInterval(timerInterval);
+  timerDisplay.classList.remove('running');
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  isRunning = false;
+  clearInterval(timerInterval);
+  remainingSeconds = totalSeconds;
+  timerDisplay.classList.remove('running','danger');
+  timeUpBanner.classList.remove('show');
+  updateTimerDisplay();
+});
+
+document.querySelectorAll('.timer-set-row button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    isRunning = false;
+    clearInterval(timerInterval);
+    totalSeconds = parseInt(btn.dataset.min, 10) * 60;
+    remainingSeconds = totalSeconds;
+    timerDisplay.classList.remove('running','danger');
+    timeUpBanner.classList.remove('show');
+    updateTimerDisplay();
+  });
+});
+
+updateTimerDisplay();
+
+/* ================= WRITING PAD ================= */
+const pad = document.getElementById('writingPad');
+const wordCountEl = document.getElementById('wordCount');
+const charCountEl = document.getElementById('charCount');
+
+function updateCounts(){
+  const text = pad.value;
+  const trimmed = text.trim();
+  const words = trimmed.length === 0 ? 0 : trimmed.split(/\s+/).length;
+  wordCountEl.textContent = words;
+  charCountEl.textContent = text.length;
+}
+pad.addEventListener('input', updateCounts);
+updateCounts();
+
+document.getElementById('clearBtn').addEventListener('click', () => {
+  pad.value = '';
+  updateCounts();
+  pad.focus();
+});
+
+/* ---- Font family switch ---- */
+const fontMap = {
+  english: "'Poppins', Arial, sans-serif",
+  hindi: "'Noto Sans Devanagari', sans-serif",
+  krutidev: "'Kruti Dev 010', 'Noto Sans Devanagari', sans-serif"
+};
+document.getElementById('fontSelect').addEventListener('change', (e) => {
+  pad.style.fontFamily = fontMap[e.target.value];
+});
+pad.style.fontFamily = fontMap.hindi;
+
+/* ---- Font size controls ---- */
+let fontSize = 18;
+const fsValue = document.getElementById('fsValue');
+
+function applyFontSize(){
+  pad.style.fontSize = fontSize + 'px';
+  pad.style.lineHeight = (fontSize + 16) + 'px';
+  fsValue.textContent = fontSize + 'px';
+}
+document.getElementById('fsPlus').addEventListener('click', () => {
+  fontSize = Math.min(fontSize + 2, 48);
+  applyFontSize();
+});
+document.getElementById('fsMinus').addEventListener('click', () => {
+  fontSize = Math.max(fontSize - 2, 12);
+  applyFontSize();
+});
+applyFontSize();
+</script>
+</body>
+</html>
